@@ -1,0 +1,37 @@
+name: Create Output
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    name: Builder
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup cache-id
+        uses: actions/cache@v2
+        id: cache-id
+        with:
+          path: ${{ runner.temp }}/cache-directory-example
+          key: ${{ runner.os }}-cache-hello-world-key-v1.0
+
+      - name: Create/Use cache
+        uses: airvzxf/cache-anything-new-action@v1.0.1
+        with:
+          script: 'install.sh'
+          is_cached: ${{ steps.cache-id.outputs.cache-hit }}
+          cache: ${{ runner.temp }}/cache-directory-example
+
+      - name: Run create-output.sh
+        run: |
+          FNAME=log-$(env TZ=America/Los_Angeles date "+%Y-%m-%d-%H_%M_%S").txt
+          echo "OUTPUT=$FNAME" >> $GITHUB_ENV
+          mkdir output
+          ./create-output.sh > output/$FNAME 2>&1
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.OUTPUT }}
+          path: output/
+          retention-days: 3

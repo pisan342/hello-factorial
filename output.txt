@@ -1,0 +1,131 @@
+Sat May  1 23:27:47 PDT 2021
+Linux csslab11.uwb.edu 3.10.0-1160.24.1.el7.x86_64 #1 SMP Thu Apr 8 19:51:47 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+uid=870540(pisan) gid=2120870540(pisan) groups=2120870540(pisan),579804(faculty)
+=====================================================
+1. Compiles without warnings with -Wall -Wextra flags
+=====================================================
+factorial.cpp: In function ‘int fact(int)’:
+factorial.cpp:14:7: warning: unused variable ‘Foo’ [-Wunused-variable]
+   14 |   int Foo = 200;
+      |       ^~~
+factorial.cpp: In function ‘int memoryLeakFunction()’:
+factorial.cpp:26:7: warning: unused variable ‘X’ [-Wunused-variable]
+   26 |   int X = 10;
+      |       ^
+=====================================================
+2. Runs and produces correct output
+=====================================================
+Hello World
+Fact 5: 120
+Done.
+=====================================================
+3. clang-tidy warnings are fixed
+=====================================================
+10764 warnings generated.
+21986 warnings generated.
+/home/NETID/pisan/bitbucket/pisanuw/hello-factorial/factorial.cpp:13:14: error: invalid case style for parameter 'N' [readability-identifier-naming,-warnings-as-errors]
+int fact(int N) {
+             ^~
+             n
+/home/NETID/pisan/bitbucket/pisanuw/hello-factorial/factorial.cpp:14:7: error: invalid case style for variable 'Foo' [readability-identifier-naming,-warnings-as-errors]
+  int Foo = 200;
+      ^~~
+      foo
+/home/NETID/pisan/bitbucket/pisanuw/hello-factorial/factorial.cpp:16:16: error: statement should be inside braces [google-readability-braces-around-statements,-warnings-as-errors]
+    if (N <= 1)
+               ^
+                {
+/home/NETID/pisan/bitbucket/pisanuw/hello-factorial/factorial.cpp:19:5: error: do not use 'else' after 'return' [readability-else-after-return,-warnings-as-errors]
+  } else {
+    ^~~~~~
+/home/NETID/pisan/bitbucket/pisanuw/hello-factorial/factorial.cpp:26:7: error: invalid case style for variable 'X' [readability-identifier-naming,-warnings-as-errors]
+  int X = 10;
+      ^
+      x
+/home/NETID/pisan/bitbucket/pisanuw/hello-factorial/factorial.cpp:27:8: error: invalid case style for variable 'Arr' [readability-identifier-naming,-warnings-as-errors]
+  int *Arr = new int[10];
+       ^~~
+       arr
+/home/NETID/pisan/bitbucket/pisanuw/hello-factorial/factorial.cpp:28:12: error: invalid case style for variable 'I' [readability-identifier-naming,-warnings-as-errors]
+  for (int I = 0; I < 10; I++) {
+           ^      ~       ~~~
+           i      i       i
+/home/NETID/pisan/bitbucket/pisanuw/hello-factorial/factorial.h:5:14: error: invalid case style for parameter 'N' [readability-identifier-naming,-warnings-as-errors]
+int fact(int N);
+             ^~
+             n
+/home/NETID/pisan/bitbucket/pisanuw/hello-factorial/factorial.h:5:14: error: invalid case style for parameter 'N' [readability-identifier-naming,-warnings-as-errors]
+int fact(int N);
+             ^~
+             n
+Suppressed 21975 warnings (21975 in non-user code).
+Use -header-filter=.* to display errors from all non-system headers. Use -system-headers to display errors from system headers as well.
+9 warnings treated as errors
+=====================================================
+4. clang-format does not find any formatting issues
+=====================================================
+Running clang-format on ./factorial.cpp
+Running clang-format on ./main.cpp
+=====================================================
+5. No memory leaks using g++
+=====================================================
+=====================================================
+6. No memory leaks using valgrind, look for "definitely lost" 
+=====================================================
+==26093== Memcheck, a memory error detector
+==26093== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==26093== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==26093== Command: ./a.out
+==26093== Parent PID: 26042
+==26093== 
+==26093== 
+==26093== HEAP SUMMARY:
+==26093==     in use at exit: 40 bytes in 1 blocks
+==26093==   total heap usage: 2 allocs, 1 frees, 72,744 bytes allocated
+==26093== 
+==26093== LEAK SUMMARY:
+==26093==    definitely lost: 40 bytes in 1 blocks
+==26093==    indirectly lost: 0 bytes in 0 blocks
+==26093==      possibly lost: 0 bytes in 0 blocks
+==26093==    still reachable: 0 bytes in 0 blocks
+==26093==         suppressed: 0 bytes in 0 blocks
+==26093== Rerun with --leak-check=full to see details of leaked memory
+==26093== 
+==26093== For lists of detected and suppressed errors, rerun with: -s
+==26093== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+=====================================================
+7. Tests have full code coverage
+=====================================================
+File '/home/NETID/pisan/bitbucket/pisanuw/hello-factorial/factorial.cpp':
+Name                        Regions    Miss   Cover     Lines    Miss   Cover
+-----------------------------------------------------------------------------
+fact(int)                         7       1  85.71%        11       3  72.73%
+memoryLeakFunction()              4       0 100.00%        12       0 100.00%
+unusedFunction()                  1       1   0.00%         4       4   0.00%
+-----------------------------------------------------------------------------
+TOTAL                            12       2  83.33%        27       7  74.07%
+
+File '/home/NETID/pisan/bitbucket/pisanuw/hello-factorial/main.cpp':
+Name                        Regions    Miss   Cover     Lines    Miss   Cover
+-----------------------------------------------------------------------------
+test01()                          1       0 100.00%         4       0 100.00%
+test02()                          1       0 100.00%         4       0 100.00%
+main                              1       0 100.00%         8       0 100.00%
+-----------------------------------------------------------------------------
+TOTAL                             3       0 100.00%        16       0 100.00%
+=====================================================
+The lines below were never executed
+=====================================================
+   20|      0|    cout << "Too large: " << N << endl;
+   21|      0|    return -1;
+   22|      0|  }
+   38|      0|void unusedFunction() {
+   39|      0|  cout << "A cout statement ";
+   40|      0|  cout << "that is never called " << endl;
+   41|      0|}
+Sat May  1 23:28:02 PDT 2021
+=====================================================
+To create an output.txt file with all the output from this script
+Run the below command
+      ./create-output.sh > output.txt 2>&1 
+=====================================================
