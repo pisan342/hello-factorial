@@ -65,4 +65,4 @@ CheckOptions:
 # -cert-msc32-c, cert-msc30-c
 #       Using seed for rand for easy testing
 # -cert-msc50-cpp, cert-msc51-cpp, clang-analyzer-security.insecureAPI.rand
-#       Using rand() rather than random library, less random burt easier
+#       Using rand() rather than random library, less random but easier
