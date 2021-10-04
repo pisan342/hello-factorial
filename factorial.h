@@ -2,7 +2,7 @@
 #define FACTORIAL_H
 
 // prototype
-int fact(int N);
+int fact(int n);
 
 int memoryLeakFunction();
 
